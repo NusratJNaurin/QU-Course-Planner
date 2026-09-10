@@ -2,6 +2,7 @@
 ![Java Version](https://img.shields.io/badge/Java-25-orange.svg)
 ![UI Framework](https://img.shields.io/badge/JavaFX-21-blue.svg)
 ![Build System](https://img.shields.io/badge/Maven-3.8+-red.svg)
+> A constraint-based course planner for QU engineering students, handling prerequisite validation and corequisite bundling for multi-major curriculum planning.
 
 ### 🚀 Project Overview
 The **Qatar University (QU) Course Planner** is a JavaFX application designed to assist QU students in planning their academic semesters. It models course dependencies—prerequisites and corequisites—to generate semester-based course recommendations for **Computer Engineering (CE)** and **Computer Science (CS)** majors.
@@ -94,9 +95,9 @@ src/
 │   │   │   ├── CourseIDs.java           # Central course catalog (Enum)
 │   │   │   ├── CoursePlanner.java       # Recommendation engine & algorithms
 │   │   │   ├── CourseType.java          # CORE, COLLEGE_REQUIREMENT, ELECTIVE
-│   │   │   ├── HelloApplication.java    # Boilerplate JavaFX entry
-│   │   │   ├── HelloController.java     # Boilerplate FXML controller
-│   │   │   ├── Launcher.java           # Main entry point for JAR/IDE
+│   │   │   ├── HelloApplication.java    # JavaFX entry point
+│   │   │   ├── HelloController.java     # FXML controller point
+│   │   │   ├── Launcher.java            # Main entry point for JAR/IDE
 │   │   │   ├── Majors.java              # Major definitions (CE, CS)
 │   │   │   └── SmartPlannerUI.java      # Primary UI and graph initialization
 │   │   └── module-info.java             # Java Module System configuration
