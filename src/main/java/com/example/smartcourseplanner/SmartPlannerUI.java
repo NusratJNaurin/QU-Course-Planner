@@ -22,6 +22,7 @@ public class SmartPlannerUI extends Application {
     private ListView<String> recommendationListView = new ListView<>();
     private final Label statusLabel = new Label("Select courses to see recommendations.");
     private final ProgressBar progressBar = new ProgressBar(0.0);
+    private final List<CheckBox> courseCheckBoxes = new ArrayList<>();
 
 
     @Override
@@ -97,6 +98,7 @@ public class SmartPlannerUI extends Application {
             String courseName = (id != null) ? id.getCourseName() : "Unknown Course";
             CheckBox checkBox = new CheckBox(cid + ": " + courseName);
             checkBox.setStyle("-fx-text-fill: #e2e8f0;");
+            courseCheckBoxes.add(checkBox);
 
             checkBox.setOnAction(e -> {
                 if (checkBox.isSelected()) {
@@ -128,13 +130,18 @@ public class SmartPlannerUI extends Application {
         col3.getChildren().addAll(col3Header, recommendationListView, statusLabel);
 
 
-        // --- SUBMIT BUTTON ---
+        // --- SUBMIT AND CLEAR BUTTONS ---
         Button submitButton = new Button("Generate Recommendations 🚀");
         submitButton.setStyle("-fx-background-color: #6366f1; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 10 20 10 20;");
-        HBox buttonBox = new HBox(submitButton);
+        
+        Button clearButton = new Button("Clear All 🗑");
+        clearButton.setStyle("-fx-background-color: #ef4444; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 10 20 10 20;");
+        
+        HBox buttonBox = new HBox(15, submitButton, clearButton);
         buttonBox.setAlignment(Pos.CENTER);
 
         submitButton.setOnAction(e -> updateRecommendations());
+        clearButton.setOnAction(e -> clearAll());
 
 
         // --- MAIN ACCENT LAYOUT GRID ---
@@ -247,9 +254,28 @@ public class SmartPlannerUI extends Application {
             progressBar.setProgress(0.0);
         } else {
             statusLabel.setText("✓ Graph evaluated: " + recommendations.size() + " options available.");
-            double progress = (double) completedCourses.size() / courses.size();
+            
+            long totalMajorCourses = Arrays.stream(CourseIDs.values())
+                    .filter(c -> c.getMajor().contains(selectedMajor))
+                    .count();
+            
+            long completedMajorCourses = completedCourses.stream()
+                    .filter(c -> c.getMajor().contains(selectedMajor))
+                    .count();
+
+            double progress = (totalMajorCourses > 0) ? (double) completedMajorCourses / totalMajorCourses : 0.0;
             progressBar.setProgress(progress);
         }
+    }
+
+    private void clearAll() {
+        completedCourses.clear();
+        for (CheckBox cb : courseCheckBoxes) {
+            cb.setSelected(false);
+        }
+        recommendationListView.getItems().clear();
+        statusLabel.setText("Select courses to see recommendations.");
+        progressBar.setProgress(0.0);
     }
 
     
