@@ -20,6 +20,8 @@ The application evaluates a student's completed courses and a desired credit lim
 
 ### 📸 Application Preview
 
+<img alt="An animated demonstration showing how to use the QU course planner tool" src="images/qu_course_planner.gif" title="QU CE/CS Course Planner" width="640" height="360"/>
+
 ---
 
 ### ⚙️ Prerequisites & Installation
