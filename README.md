@@ -5,7 +5,7 @@
 > A constraint-based course planner for QU engineering students, handling prerequisite validation and corequisite bundling for multi-major curriculum planning.
 
 ### 🚀 Project Overview
-The **Qatar University (QU) Course Planner** is a JavaFX application designed to assist QU students in planning their academic semesters. It models course dependencies—prerequisites and corequisites—to generate semester-based course recommendations for **Computer Engineering (CE)** and **Computer Science (CS)** majors.
+The **Qatar University (QU) Course Planner** is a JavaFX application designed to assist QU engineering students in planning their academic semesters. It models course dependencies—prerequisites and corequisites—to generate semester-based course recommendations for **Computer Engineering (CE)** and **Computer Science (CS)** majors.
 
 The application evaluates a student's completed courses and a desired credit limit to suggest a valid set of courses, ensuring that all interdependent corequisites are bundled together in the recommendation.
 
