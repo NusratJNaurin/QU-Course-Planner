@@ -1,4 +1,4 @@
-# 🎓 Qatar University Course Planner
+# 🎓 Qatar University CE/CS Course Planner
 ![Java Version](https://img.shields.io/badge/Java-25-orange.svg)
 ![UI Framework](https://img.shields.io/badge/JavaFX-21-blue.svg)
 ![Build System](https://img.shields.io/badge/Maven-3.8+-red.svg)
