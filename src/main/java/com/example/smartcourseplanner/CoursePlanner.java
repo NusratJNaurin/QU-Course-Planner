@@ -95,6 +95,10 @@ public class CoursePlanner {
                 Course coreq = findCourse(coreqId);
                 if (coreq == null || !coreq.getMajor().contains(major) || addedThisSemester.contains(coreq))
                     return null;
+
+                if (!canTakeCourse(coreqId, completedCourses))
+                    return null; // reject the entire bundle if any co-requisite is locked
+
                 stack.push(coreq);
             }
         }

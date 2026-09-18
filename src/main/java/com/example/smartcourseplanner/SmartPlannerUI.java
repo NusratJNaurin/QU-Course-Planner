@@ -36,7 +36,7 @@ public class SmartPlannerUI extends Application {
         header.setPadding(new Insets(5, 15, 15, 25)); // Top, Right, Bottom, Left spacing
         header.setAlignment(Pos.CENTER);
         header.setStyle("-fx-background-color: #1a202c; -fx-border-color: #2d3748; -fx-border-width: 0 0 1 0;");
-        Label headingLabel = new Label("🎓 Smart Course Planner");
+            Label headingLabel = new Label("🎓 Qatar University CE/CS Course Planner");
         headingLabel.setStyle("-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #818cf8;");
         header.getChildren().add(headingLabel);
 
@@ -205,7 +205,7 @@ public class SmartPlannerUI extends Application {
         planner.addPrerequisite(CourseIDs.CMPE462, CourseIDs.CMPE364);
         planner.addPrerequisite(CourseIDs.CMPE476, CourseIDs.ELEC351);
 
-        planner.addCorequisite(CourseIDs.ELEC201, CourseIDs.MATH101);
+        planner.addCorequisite(CourseIDs.ELEC201, CourseIDs.MATH102);
         planner.addCorequisite(CourseIDs.ELEC201, CourseIDs.PHYS193);
         planner.addPrerequisite(CourseIDs.ELEC231, CourseIDs.ELEC201);
         planner.addPrerequisite(CourseIDs.ELEC351, CourseIDs.ELEC201);
