@@ -5,18 +5,17 @@
 > A constraint-based course planner for QU engineering students, handling prerequisite validation and corequisite bundling for multi-major curriculum planning.
 
 ### 🚀 Project Overview
-The **Qatar University (QU) Course Planner** is a JavaFX application designed to assist QU engineering students in planning their academic semesters. It models course dependencies—prerequisites and corequisites—to generate semester-based course recommendations for **Computer Engineering (CE)** and **Computer Science (CS)** majors.
+The **Qatar University (QU) CE/CS Course Planner** is a JavaFX application designed to assist QU engineering students in planning their academic semesters. It models course dependencies—prerequisites and corequisites—to generate semester-based course recommendations for **Computer Engineering (CE)** and **Computer Science (CS)** majors.
 
 The application evaluates a student's completed courses and a desired credit limit to suggest a valid set of courses, ensuring that all interdependent corequisites are bundled together in the recommendation.
 
 ---
 
 ### 🔑 Key Features & Functions
-*   **Prerequisite Validation**: The `canTakeCourse()` method verifies that all `CourseIDs` listed in a course's prerequisite list exist within the user's `completedCourses` set.
-*   **Corequisite Chain Resolution**: The `suggestNextCourses()` method ensures that if a course is recommended, all its corequisites (identified via `makeCorequisiteBundle`) are also included, provided the total bundle credits do not exceed the user-defined `maxCredits`.
-*   **Degree Progress Tracking**: A `ProgressBar` calculates completion based on the ratio of the number of completed courses to the total courses defined in the `CourseIDs` catalog.
-*   **Major-Specific Filtering**: Filters the course catalog based on the `Majors` enum (CE or CS) defined in `CourseIDs`.
-
+*   **Prerequisite Validation**: Automatically checks student course history against degree requirements to ensure a course is only recommended once all of its dependent prerequisites are completed.
+*   **Corequisite Chain Resolution**: Links dependent co-requisite courses, ensuring they are scheduled concurrently within the same semester without violating the user's maximum credit limit or prerequisite rules.
+*   **Degree Progress Tracking**: Computes and visually displays real-time degree completion metrics based on completed credit hours against total program requirements.
+*   **Major-Specific Filtering**: Tailors course recommendations dynamically based on the student's selected academic track (Computer Engineering or Computer Science).
 ---
 
 ### 📸 Application Preview
@@ -35,7 +34,7 @@ The application evaluates a student's completed courses and a desired credit lim
 *   **ValidatorFX**: Provides input validation utilities.
 *   **JUnit 5**: Testing framework for unit and integration tests.
 
-#### Installation
+#### Installation & Quick Start
 1. Clone the repository.
 2. Ensure `JAVA_HOME` points to a JDK 25 installation.
 3. Install dependencies and build the project:
@@ -59,7 +58,7 @@ Alternatively, execute the `com.example.smartcourseplanner.Launcher` class.
 2.  **Set Desired Credit Hours**: Use the spinner (12–21 credits) to define the maximum workload.
 3.  **Mark Completed Courses**: Select courses from the checklist in the middle column.
 4.  **Generate**: Click **"Generate Recommendations 🚀"**.
-5.  **Review**: Valid course recommendations will appear in the "3. Suggested Courses" column.
+5.  **Review**: Valid course recommendations will appear in the "Suggested Courses" column.
 
 ---
 
@@ -67,21 +66,19 @@ Alternatively, execute the `com.example.smartcourseplanner.Launcher` class.
 The system is structured into three primary layers:
 
 #### 1. Domain Model (`com.example.smartcourseplanner`)
-*   **`CourseIDs`**: An enumeration acting as the central data registry. It defines every course's unique ID, title, credit weight, `CourseType` (CORE, COLLEGE_REQUIREMENT, ELECTIVE), and the `Majors` it belongs to.
-*   **`Course`**: A wrapper for `CourseIDs` that maintains runtime state, specifically `ArrayList` collections of prerequisite and corequisite `CourseIDs`.
-*   **`Majors` & `CourseType`**: Enums defining the supported academic tracks (CE, CS) and course categorization.
+Acts as the single source of truth for catalog data. A centralized enumeration (`CourseIDs`) maintains course metadata (credits, classifications, major requirements), preventing state inconsistency across the app. Dynamic wrapper nodes encapsulate runtime prerequisite and co-requisite dependencies.
 
 #### 2. Planning Engine (`CoursePlanner`)
-The `CoursePlanner` class manages the course graph and implements the selection logic:
-*   **Data Representation**: Courses are stored in a `HashMap<CourseIDs, Course>`.
-*   **Corequisite Bundling**: Uses a **stack-based Depth-First Search (DFS)** in `makeCorequisiteBundle()` to recursively identify all mutually dependent courses. If any corequisite in a chain is missing or invalid for the selected major, the entire bundle is discarded.
-*   **Priority Logic**: Implements a weight-based sorting mechanism where `CORE` courses (Weight 1) are prioritized over `COLLEGE_REQUIREMENT` (Weight 2) and `ELECTIVE` (Weight 3).
+Encapsulates course-selection logic independently of the UI layer, improving testability and maintainability. Utilizes an in-memory `Hash Map` for $O(1)$ course lookups and a stack-based **Depth-First Search (DFS)** to resolve co-requisite chains as atomic bundles. Eligible courses are prioritized using the following order: 
+
+Core $\rightarrow$ College Requirements $\rightarrow$ Electives.
 
 #### 3. Presentation Layer (`SmartPlannerUI`)
-A JavaFX-based dashboard that facilitates:
-*   **State Management**: Tracks the `selectedMajor`, `selectedCreditLimit`, and a `Set` of `completedCourses`.
-*   **Data Flow**: On user trigger, it passes the current state to the `CoursePlanner`, which returns a `Set<Course>` of recommendations displayed in a `ListView`.
+A JavaFX dashboard that captures user state (target major, credit limits, completed coursework). It communicates with the planning engine without containing the underlying selection logic, allowing the engine to be reused across other interfaces, such as a CLI or web frontend.
 
+Data Flow:
+
+`UI State Capture` → `Engine Graph Evaluation` → `Priority-Based Filtering` → `Dashboard Rendering`
 
 ---
 
